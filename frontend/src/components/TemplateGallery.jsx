@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
+import toast from "react-hot-toast";
 import { getTemplatePreviewHTML } from "../utils/templatePreview";
 import Toast from "./Toast.jsx";
 import { NoTemplatesFound, LoadingState } from "./EmptyState.jsx";
 import { fetchAvailableTemplates } from "../api/templates.js";
 import TemplateWorkspaceModal from "./TemplateWorkspaceModal.jsx";
+import { getFavoriteTemplateIds, toggleFavoriteTemplate } from "../utils/activity";
 
 const TemplateGallery = ({ searchTerm }) => {
   const [templates, setTemplates] = useState([]);
@@ -11,6 +13,7 @@ const TemplateGallery = ({ searchTerm }) => {
   const [activeApiKey, setActiveApiKey] = useState(null);
   const [toasts, setToasts] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [favoriteIds, setFavoriteIds] = useState(getFavoriteTemplateIds());
   const [localState, setLocalState] = useState({
     fontFamily: "Poppins, sans-serif",
     background: "#f9fafb",
@@ -226,12 +229,29 @@ const TemplateGallery = ({ searchTerm }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTemplates.map((template, index) => (
             <div
-              key={`${template.id}-${index}`}
-              className="rounded-2xl p-6 bg-white/70 backdrop-blur-xl shadow-xl hover:scale-[1.04] transition-all duration-500 border border-white/30 cursor-pointer"
+              key={`${template.id || template.apiKey}-${index}`}
+              className="rounded-2xl p-6 bg-white/70 backdrop-blur-xl shadow-xl hover:scale-[1.04] transition-all duration-500 border border-white/30 cursor-pointer relative group"
               onClick={() => setSelectedTemplate(template)}
             >
-              <div className="h-28 rounded-xl mb-4 flex items-center justify-center bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white text-xl font-bold shadow-lg">
+              <div className="h-28 rounded-xl mb-4 flex items-center justify-center bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white text-xl font-bold shadow-lg relative">
                 {template.name.split(" ")[0]}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const tId = template.id || template.templateId || template.apiKey;
+                    const isFav = toggleFavoriteTemplate(tId, template.name);
+                    setFavoriteIds(getFavoriteTemplateIds());
+                    if (isFav) {
+                      toast.success(`Saved "${template.name}" to Favorites!`);
+                    } else {
+                      toast.success(`Removed "${template.name}" from Favorites`);
+                    }
+                  }}
+                  className="absolute top-2 right-2 w-8 h-8 rounded-full bg-slate-900/60 hover:bg-slate-900/90 text-amber-400 border border-white/20 flex items-center justify-center text-sm shadow-md transition-transform hover:scale-110 cursor-pointer"
+                  title={favoriteIds.includes(template.id || template.templateId || template.apiKey) ? "Remove from Favorites" : "Save to Favorites"}
+                >
+                  {favoriteIds.includes(template.id || template.templateId || template.apiKey) ? "⭐" : "☆"}
+                </button>
               </div>
               <div className="p-2">
                 <h3 className="font-semibold text-lg mb-2">{template.name}</h3>

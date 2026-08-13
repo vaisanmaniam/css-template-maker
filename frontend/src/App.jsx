@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
+import GuidePage from './pages/GuidePage';
 import TemplatesPage from './pages/TemplatesPage';
 import AboutPage from './pages/AboutPage';
 import PromptLabPage from './pages/PromptLabPage';
@@ -27,6 +28,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/guide" element={<GuidePage />} />
         <Route path="/templates" element={<TemplatesPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route 

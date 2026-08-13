@@ -1,0 +1,369 @@
+/* ==============================================
+   Guide Page CSS — Scroll-Driven Presentation
+   Typography & Contrast Enhancement
+   ============================================== */
+
+/* DEDICATED GLASS NAVBAR */
+.guide-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  z-index: 100;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  color: #ffffff;
+}
+
+.guide-nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.guide-nav-badge {
+  background: linear-gradient(135deg, #ff4e50, #ffb347);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.guide-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.guide-nav-links a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.guide-nav-links a:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.guide-nav-btn {
+  background: linear-gradient(135deg, #ff4e50, #ff7eb3);
+  color: white !important;
+  box-shadow: 0 4px 14px rgba(255, 78, 80, 0.4);
+}
+
+.guide-nav-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 78, 80, 0.6);
+}
+
+/* FULL SCREEN SNAP CONTAINER */
+.snap-container {
+  height: 100vh;
+  width: 100vw;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  position: relative;
+  background: #0f172a;
+}
+
+/* SNAP SECTION */
+.snap-section {
+  height: 100vh;
+  min-height: 100vh;
+  width: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 24px 40px 24px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* SECTION BACKGROUND GRADIENTS */
+.snap-section.section-welcome {
+  background: linear-gradient(135deg, #ff4e50, #ff7eb3, #ffb347);
+  background-size: 200% 200%;
+  animation: bgGradientMove 14s ease infinite;
+}
+
+.snap-section.section-how-it-works {
+  background: linear-gradient(135deg, #311b92, #4f46e5, #7c3aed);
+  background-size: 200% 200%;
+  animation: bgGradientMove 14s ease infinite;
+}
+
+.snap-section.section-customization {
+  background: linear-gradient(135deg, #0284c7, #2563eb, #7c3aed);
+  background-size: 200% 200%;
+  animation: bgGradientMove 14s ease infinite;
+}
+
+.snap-section.section-snippet {
+  background: linear-gradient(135deg, #059669, #0d9488, #0284c7);
+  background-size: 200% 200%;
+  animation: bgGradientMove 14s ease infinite;
+}
+
+.snap-section.section-example {
+  background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+  background-size: 200% 200%;
+  animation: bgGradientMove 14s ease infinite;
+}
+
+.snap-section.section-note {
+  background: linear-gradient(135deg, #b45309, #d97706, #dc2626);
+  background-size: 200% 200%;
+  animation: bgGradientMove 14s ease infinite;
+}
+
+.snap-section.section-roadmap {
+  background: linear-gradient(135deg, #4c1d95, #831843, #581c87);
+  background-size: 200% 200%;
+  animation: bgGradientMove 14s ease infinite;
+}
+
+.snap-section.section-why {
+  background: linear-gradient(135deg, #1e1b4b, #311b92, #6b21a8);
+  background-size: 200% 200%;
+  animation: bgGradientMove 14s ease infinite;
+}
+
+.snap-section.section-status {
+  background: linear-gradient(135deg, #0f172a, #1e1b4b, #0284c7);
+  background-size: 200% 200%;
+  animation: bgGradientMove 14s ease infinite;
+}
+
+@keyframes bgGradientMove {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* RADIAL OVERLAY RINGS */
+.snap-radial-overlay {
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.12) 0%, transparent 60%);
+  animation: rotatePulse 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotatePulse {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+/* DARK TRANSLUCENT CARD WITH HIGH CONTRAST */
+.snap-card {
+  position: relative;
+  z-index: 10;
+  max-width: 920px;
+  width: 100%;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 28px;
+  padding: 36px 42px;
+  color: #ffffff;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+  animation: snapCardEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes snapCardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* PROMINENT MAIN SECTION HEADINGS */
+.guide-title,
+.snap-card h2 {
+  color: #ffffff;
+  font-weight: 900;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  letter-spacing: -0.03em;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  margin-bottom: 14px;
+}
+
+/* SECTION SUBTITLES & SUPPORTING TEXT */
+.guide-subtitle,
+.snap-card .section-subtitle {
+  color: #e2e8f0;
+  font-weight: 500;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.8;
+  max-width: 720px;
+}
+
+/* BODY CONTENT TEXT */
+.guide-body,
+.snap-card p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.02rem;
+  line-height: 1.75;
+}
+
+.snap-card h3,
+.snap-card h4,
+.snap-card h5 {
+  color: #f8fafc;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+/* WARNING / IMPORTANT NOTE CARD HEADING & TEXT */
+.warning-card h2,
+.warning-title {
+  color: #fde68a !important;
+  text-shadow: 0 2px 16px rgba(245, 158, 11, 0.4) !important;
+}
+
+.warning-card p,
+.warning-card li {
+  color: rgba(254, 243, 199, 0.95) !important;
+  line-height: 1.75;
+}
+
+/* NAVIGATION SIDE DOTS */
+.snap-dots-indicator {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.snap-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.snap-dot:hover,
+.snap-dot.active {
+  background: #ffffff;
+  transform: scale(1.3);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+}
+
+/* CODE & CHIPS IN SNAP CARDS */
+.snap-card .customization-chips span {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #f1f5f9;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.snap-card .code-box {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 20px;
+  color: #38bdf8;
+  font-family: monospace;
+  font-size: 0.9rem;
+  overflow-x: auto;
+}
+
+/* ROADMAP GRID FOR SNAP */
+.snap-roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.snap-roadmap-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 18px;
+  border-radius: 18px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.snap-roadmap-card:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.snap-roadmap-card h5 {
+  font-weight: 800;
+  font-size: 0.98rem;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.snap-roadmap-card p {
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  line-height: 1.5;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .guide-navbar {
+    padding: 0 16px;
+  }
+  
+  .guide-nav-links a {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+
+  .snap-card {
+    padding: 24px;
+    max-height: calc(100vh - 100px);
+  }
+
+  .snap-dots-indicator {
+    right: 10px;
+  }
+}

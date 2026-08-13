@@ -1,13 +1,14 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import React from "react";
+import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
 import "./HomePage.css";
 
 const HomePage = () => {
   return (
-    <>
+    <div className="home-container">
       <Navbar />
 
+      {/* HERO SECTION */}
       <section className="hero">
         <div className="wave-overlay"></div>
 
@@ -24,11 +25,13 @@ const HomePage = () => {
           </p>
 
           <div className="hero-buttons">
-            <a href="/about" className="btn btn-outline">About</a>
+            <Link to="/guide" className="btn-read-me">
+              📖 If You Have a Minute, Read Me
+            </Link>
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

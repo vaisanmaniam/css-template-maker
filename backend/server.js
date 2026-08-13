@@ -6,6 +6,7 @@ import templateConfigStore from "./data/templateConfigStore.js";
 
 import cssRoutes from "./routes/cssRoutes.js";
 import configRoutes from "./routes/configRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 
 app.use("/api/css", cssRoutes);
 app.use("/api/config", configRoutes);
+app.use("/api/contact", contactRoutes);
 
 /* ===============================
    TEMPLATE LIST

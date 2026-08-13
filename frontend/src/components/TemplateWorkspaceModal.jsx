@@ -1,4 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
+import toast from "react-hot-toast";
+import { logActivity } from "../utils/activity";
+import "./TemplateWorkspaceModal.css";
 
 const generatePreviewHTML = (template, styles) => {
 
@@ -1639,8 +1642,8 @@ const TemplateWorkspaceModal = ({ template, onClose }) => {
             primary: updated.primary,
             secondary: updated.secondary,
             accent: updated.accent,
-            background: "#ffffff",
-            text: "#1e293b"
+            background: updated.background,
+            text: updated.text
           },
           typography: {
             fontFamily: updated.fontFamily,
@@ -1648,8 +1651,8 @@ const TemplateWorkspaceModal = ({ template, onClose }) => {
             headingWeight: "700"
           },
           layout: {
-            paddingBase: "16px",
-            borderRadius: "8px",
+            paddingBase: updated.padding,
+            borderRadius: updated.radius,
             containerWidth: "1200px"
           }
         })
@@ -1667,24 +1670,71 @@ const TemplateWorkspaceModal = ({ template, onClose }) => {
     return generatePreviewHTML(template, styles);
   }, [template, styles]);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "c") {
+        const activeElement = document.activeElement;
+        const isInputFocused = activeElement && (
+          activeElement.tagName === "INPUT" ||
+          activeElement.tagName === "TEXTAREA" ||
+          activeElement.tagName === "SELECT" ||
+          activeElement.isContentEditable
+        );
+
+        if (!isInputFocused) {
+          e.preventDefault();
+          const key = template.apiKey || "demo_key_123";
+          navigator.clipboard.writeText(key);
+          toast.success("API Key Copied to Clipboard!");
+          logActivity("copy_key", `Copied API key for ${template.name}`);
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose, template]);
+
   const handleActivate = () => {
     localStorage.setItem("activeTemplate", JSON.stringify(template));
-    alert("Template Activated Successfully!");
+    toast.success("Template Activated Successfully!");
+    logActivity("activate", `Activated ${template.name}`);
   };
 
   const handleDeactivate = () => {
     localStorage.removeItem("activeTemplate");
-    alert("Template Deactivated!");
+    toast.success("Template Deactivated!");
   };
 
   const copyApiKey = () => {
     navigator.clipboard.writeText(template.apiKey || "demo_key_123");
-    alert("API Key Copied to Clipboard!");
+    toast.success("API Key Copied to Clipboard!");
+    logActivity("copy_key", `Copied API key for ${template.name}`);
+  };
+
+  const copyTemplateLink = () => {
+    const link = `http://localhost:5000/api/css/${template.apiKey || "demo_key_123"}`;
+    navigator.clipboard.writeText(link);
+    toast.success("Template Link Copied to Clipboard!");
+    logActivity("copy_snippet", `Copied CSS link for ${template.name}`);
+  };
+
+  const copyIntegrationSnippet = () => {
+    const key = template.apiKey || "demo_key_123";
+    const snippet = `<link rel="stylesheet" href="http://localhost:5000/api/css/${key}">`;
+    navigator.clipboard.writeText(snippet);
+    toast.success("HTML integration snippet copied");
+    logActivity("copy_snippet", `Copied HTML integration snippet for ${template.name}`);
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-900 flex items-center justify-center z-50">
-      <div className="bg-white w-[95%] h-[90%] rounded-2xl flex overflow-hidden shadow-2xl">
+    <div className="fixed inset-0 bg-gray-900/80 backdrop-blur-sm flex items-center justify-center z-50 workspace-modal-overlay">
+      <div className="bg-white w-[95%] h-[90%] rounded-2xl flex overflow-hidden shadow-2xl workspace-modal-card">
         
         {/* LEFT CUSTOMIZATION PANEL */}
         <div className="w-[30%] p-6 overflow-y-auto border-r border-gray-200 bg-gray-50">
@@ -1831,13 +1881,49 @@ const TemplateWorkspaceModal = ({ template, onClose }) => {
         <div className="w-[70%] flex flex-col">
           
           {/* PREVIEW HEADER */}
-          <div className="p-4 border-b border-gray-200 bg-white">
-            <h3 className="text-lg font-semibold text-gray-800">Live Preview (Real CSS Output)</h3>
-            <p className="text-sm text-gray-600">Connected to backend API - reflects customization changes instantly</p>
+          <div className="p-4 border-b border-gray-200 bg-white flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-800">Live Preview (Real CSS Output)</h3>
+              <p className="text-sm text-gray-600">Connected to backend API - reflects customization changes instantly</p>
+            </div>
+            <button 
+              onClick={onClose}
+              className="w-9 h-9 flex items-center justify-center rounded-full text-gray-500 hover:text-gray-900 hover:bg-gray-100 text-xl font-bold transition-colors cursor-pointer"
+              title="Close modal"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* FLOATING THEME STATUS BAR */}
+          <div className="sticky top-0 z-20 bg-slate-900/90 backdrop-blur-md text-white px-4 py-2.5 text-xs flex items-center justify-between border-b border-white/10 shadow-sm flex-wrap gap-2">
+            <div className="flex items-center gap-2 font-bold text-emerald-400">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>Theme Active</span>
+            </div>
+
+            <div className="flex items-center gap-4 flex-wrap">
+              <div className="flex items-center gap-1.5">
+                <span className="text-gray-400 font-medium">Primary:</span>
+                <span className="inline-block w-3.5 h-3.5 rounded-full border border-white/40 shadow-xs" style={{ backgroundColor: styles.primary }}></span>
+                <span className="font-mono text-gray-200">{styles.primary}</span>
+              </div>
+
+              <div className="flex items-center gap-1">
+                <span className="text-gray-400 font-medium">Font:</span>
+                <span className="font-medium text-gray-200">{styles.fontFamily.split(',')[0]}</span>
+              </div>
+
+              <div className="flex items-center gap-1">
+                <span className="text-gray-400 font-medium">Radius:</span>
+                <span className="font-medium text-gray-200">{styles.radius}</span>
+              </div>
+            </div>
           </div>
           
           {/* PREVIEW */}
-          <div className="flex-1 bg-white">
+          <div className="flex-1 bg-white p-4 overflow-y-auto preview-iframe-wrapper">
             <iframe
   key={template.apiKey + JSON.stringify(styles)}
   title="preview"
@@ -1845,7 +1931,68 @@ const TemplateWorkspaceModal = ({ template, onClose }) => {
     <!DOCTYPE html>
     <html>
       <head>
+        <meta charset="UTF-8" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="http://localhost:5000/api/css/${template.apiKey}?v=${Date.now()}">
+        <style>
+          :root {
+            --primary: ${styles.primary};
+            --secondary: ${styles.secondary};
+            --accent: ${styles.accent};
+            --background: ${styles.background};
+            --text: ${styles.text};
+            --font-family: ${styles.fontFamily};
+            --padding-base: ${styles.padding};
+            --border-radius: ${styles.radius};
+
+            --primaryColor: ${styles.primary};
+            --secondaryColor: ${styles.secondary};
+            --accentColor: ${styles.accent};
+            --backgroundColor: ${styles.background};
+            --textColor: ${styles.text};
+            --fontFamily: ${styles.fontFamily};
+            --padding: ${styles.padding};
+            --radius: ${styles.radius};
+
+            --primary-color: ${styles.primary};
+            --secondary-color: ${styles.secondary};
+            --accent-color: ${styles.accent};
+            --bg-color: ${styles.background};
+            --text-color: ${styles.text};
+          }
+
+          * {
+            transition: color 0.3s ease, background-color 0.3s ease, font-family 0.3s ease, border-radius 0.3s ease, padding 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+          }
+
+          html, body, h1, h2, h3, h4, h5, h6, p, button, a, span, div, input, select {
+            font-family: ${styles.fontFamily} !important;
+          }
+
+          html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            overflow-y: auto;
+            background-color: ${styles.background} !important;
+            color: ${styles.text} !important;
+          }
+
+          .nav, header {
+            padding: ${styles.padding} !important;
+          }
+
+          .card, .container {
+            padding: ${styles.padding};
+            border-radius: ${styles.radius};
+          }
+
+          .btn, button, input, select {
+            border-radius: ${styles.radius} !important;
+          }
+        </style>
       </head>
       <body>
 
@@ -1873,39 +2020,54 @@ const TemplateWorkspaceModal = ({ template, onClose }) => {
   `}
   style={{
     width: "100%",
-    height: "600px",
+    minHeight: "650px",
+    height: "100%",
     border: "none",
     borderRadius: "12px"
   }}
 />
           </div>
 
-          {/* ACTIONS */}
-          <div className="p-4 flex gap-4 border-t border-gray-200 bg-white">
+          {/* ACTIONS / FOOTER */}
+          <div className="p-4 flex flex-wrap gap-3 border-t border-gray-200 bg-white sticky bottom-0 z-10 items-center">
             <button 
               onClick={handleActivate}
-              className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors font-medium"
+              className="bg-emerald-600 text-white px-5 py-2.5 rounded-lg hover:bg-emerald-700 transition-colors font-medium flex items-center gap-2 shadow-sm cursor-pointer"
             >
-              ✅ Activate
+              ✅ Activate Template
             </button>
 
             <button 
               onClick={handleDeactivate}
-              className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors font-medium"
+              className="bg-rose-600 text-white px-5 py-2.5 rounded-lg hover:bg-rose-700 transition-colors font-medium flex items-center gap-2 shadow-sm cursor-pointer"
             >
-              ❌ Deactivate
+              ❌ Deactivate Template
             </button>
 
             <button 
               onClick={copyApiKey}
-              className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors font-medium"
+              className="bg-indigo-600 text-white px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors font-medium flex items-center gap-2 shadow-sm cursor-pointer"
             >
               🔑 Copy API Key
             </button>
 
             <button 
+              onClick={copyTemplateLink}
+              className="bg-blue-600 text-white px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center gap-2 shadow-sm cursor-pointer"
+            >
+              🔗 Copy Template Link
+            </button>
+
+            <button 
+              onClick={copyIntegrationSnippet}
+              className="bg-emerald-600 text-white px-5 py-2.5 rounded-lg hover:bg-emerald-700 transition-colors font-medium flex items-center gap-2 shadow-sm cursor-pointer"
+            >
+              📋 Copy Integration Snippet
+            </button>
+
+            <button 
               onClick={onClose} 
-              className="ml-auto px-6 py-2 text-gray-600 hover:text-gray-800 font-medium"
+              className="ml-auto px-5 py-2.5 text-gray-600 hover:text-gray-900 font-medium hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
             >
               ✕ Close
             </button>

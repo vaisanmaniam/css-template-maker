@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { loginUser } from "../utils/auth";
 import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
 import "./Auth.css";
 
 export default function Login() {
@@ -10,10 +11,12 @@ export default function Login() {
 
   const handleLogin = () => {
     try {
-      loginUser(form.username, form.password);
+      const u = loginUser(form.username, form.password);
+      toast.success(`Welcome back, ${u.username}!`);
       navigate("/profile");
     } catch (e) {
       setError(e.message);
+      toast.error(e.message || "Invalid credentials");
     }
   };
 

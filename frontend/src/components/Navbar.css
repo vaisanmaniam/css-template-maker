@@ -120,31 +120,36 @@
   color: white;
 }
 
-/* ABOUT */
+/* ABOUT (DARK FUTURISTIC GLASS) */
 .navbar.about {
-  background: linear-gradient(135deg, #ffc0cb, #ffe4e1);
+  background: rgba(15, 23, 42, 0.75) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  border-bottom: 1px solid rgba(236, 72, 153, 0.3) !important;
+  box-shadow: 0 4px 30px rgba(124, 58, 237, 0.15) !important;
+  color: white !important;
 }
 
-/* AI PROMPT (DARK) */
-.navbar.prompt {
-  background: #0f0f1a;
-  color: white;
+.navbar.about .nav-logo {
+  color: white !important;
+  text-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
 }
 
-.navbar.prompt .nav-logo,
-.navbar.prompt a {
-  color: white;
-}
-
-/* ABOUT (LIGHT) */
-.navbar.about {
-  background: linear-gradient(135deg, #ffc0cb, #ffe4e1);
-  color: #1e293b;
-}
-
-.navbar.about .nav-logo,
 .navbar.about a {
-  color: #1e293b;
+  color: rgba(255, 255, 255, 0.85) !important;
+  transition: all 0.3s ease;
+}
+
+.navbar.about a:hover {
+  color: white !important;
+}
+
+.navbar.about a[href="/about"] {
+  background: linear-gradient(135deg, #ec4899, #7c3aed) !important;
+  color: white !important;
+  padding: 6px 16px;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(236, 72, 153, 0.4);
 }
 
 /* PROFILE (GLASS STYLE) */
