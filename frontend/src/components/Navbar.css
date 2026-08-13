@@ -1,0 +1,173 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;              /* FIXED HEIGHT */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  z-index: 1000;
+  backdrop-filter: blur(15px);
+  box-sizing: border-box;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.navbar * {
+  box-sizing: border-box;
+}
+
+/* REMOVE ANY BORDER / SHADOW LINE */
+.navbar::after {
+  display: none;
+}
+
+/* Logo */
+.nav-logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+/* Links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.nav-links a {
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  opacity: 0.7;
+}
+
+/* Register Button */
+.nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #ff7eb3, #ffb347);
+  color: white !important;
+  font-weight: bold;
+}
+
+/* LIGHT BACKGROUND PAGES */
+.navbar.home,
+.navbar.templates,
+.navbar.about {
+  color: #1e293b;
+}
+
+.navbar.home .nav-logo,
+.navbar.templates .nav-logo,
+.navbar.about .nav-logo {
+  color: #1e293b;
+}
+
+.navbar.home a,
+.navbar.templates a,
+.navbar.about a {
+  color: #1e293b;
+}
+
+/* DARK BACKGROUND PAGES */
+.navbar.prompt,
+.navbar.profile {
+  color: white;
+}
+
+.navbar.prompt .nav-logo,
+.navbar.profile .nav-logo {
+  color: white;
+}
+
+.navbar.prompt a,
+.navbar.profile a {
+  color: white;
+}
+
+/* HOME */
+.navbar.home {
+  background: linear-gradient(135deg, #ff8ab4, #ffb347, #ffd700);
+}
+
+/* TEMPLATE */
+.navbar.templates {
+  background: linear-gradient(135deg, #ff7eb3, #ffb347, #ffd700);
+  color: white;
+}
+
+.navbar.templates .nav-logo,
+.navbar.templates a {
+  color: white;
+  font-weight: 600;
+}
+
+.navbar.templates .nav-btn {
+  background: black;
+  color: white;
+}
+
+/* ABOUT */
+.navbar.about {
+  background: linear-gradient(135deg, #ffc0cb, #ffe4e1);
+}
+
+/* AI PROMPT (DARK) */
+.navbar.prompt {
+  background: #0f0f1a;
+  color: white;
+}
+
+.navbar.prompt .nav-logo,
+.navbar.prompt a {
+  color: white;
+}
+
+/* ABOUT (LIGHT) */
+.navbar.about {
+  background: linear-gradient(135deg, #ffc0cb, #ffe4e1);
+  color: #1e293b;
+}
+
+.navbar.about .nav-logo,
+.navbar.about a {
+  color: #1e293b;
+}
+
+/* PROFILE (GLASS STYLE) */
+.navbar.profile {
+  background: rgba(0,0,0,0.7);
+  color: white;
+}
+
+.navbar.profile .nav-logo,
+.navbar.profile a {
+  color: white;
+}
+
+/* Default for other pages */
+.navbar:not(.home):not(.about):not(.templates):not(.prompt):not(.profile) {
+  background: rgba(0,0,0,0.3);
+  color: white;
+}
+
+.navbar:not(.home):not(.about):not(.templates):not(.prompt):not(.profile) .nav-logo {
+  color: white;
+}
+
+.navbar:not(.home):not(.about):not(.templates):not(.prompt):not(.profile) a {
+  color: white;
+}

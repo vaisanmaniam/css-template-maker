@@ -1,0 +1,842 @@
+import React, { useState, useEffect, useMemo } from "react";
+import Toast from "./Toast.jsx";
+import { NoTemplatesFound, LoadingState } from "./EmptyState.jsx";
+import { fetchAvailableTemplates } from "../api/templates.js";
+
+const TemplateGallery = ({ searchTerm }) => {
+  const [templates, setTemplates] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeApiKey, setActiveApiKey] = useState(null);
+  const [toasts, setToasts] = useState([]);
+  const [activeWorkspace, setActiveWorkspace] = useState(null);
+  const [localConfig, setLocalConfig] = useState({
+  colors: {
+    primary: "#2563eb",
+    secondary: "#64748b",
+    accent: "#f59e0b",
+    background: "#ffffff",
+    text: "#111111"
+  },
+  typography: {
+    fontFamily: "Poppins, sans-serif",
+    baseSize: "16px",
+    headingWeight: "700"
+  },
+  layout: {
+    padding: "20px",
+    radius: "12px",
+    containerWidth: "1200px"
+  }
+
+  // ... rest of the code remains the same ...
+<head>
+<style>
+body { margin:0; font-family:${typography.fontFamily}; background:${colors.background}; color:#0ff; min-height:100vh; position:relative; font-size: ${typography.baseSize}; }
+body::before { content:''; position:fixed; top:0; left:0; width:100%; height:100%; background-image:repeating-linear-gradient(0deg, rgba(97,218,251,0.03) 0px, transparent 1px, transparent 2px, rgba(97,218,251,0.03) 3px); background-size:100% 20px; z-index:-1; pointer-events:none; }
+.nav { background:rgba(15,23,42,0.95); border-bottom:1px solid #1e293b; padding:${layout.padding}; display:flex; justify-content:space-between; align-items:center; }
+.nav h2 { color:${colors.primary}; font-size:20px; font-weight:600; font-family:'Courier New', monospace; display:flex; align-items:center; gap:10px; }
+.nav h2::before { content:'$'; color:#5c6370; }
+.nav .btn { background:transparent; color:${colors.primary}; border:1px solid ${colors.primary}; padding:10px 20px; font-family:'Courier New', monospace; font-size:14px; cursor:pointer; transition:all 0.3s ease; position:relative; overflow:hidden; border-radius: ${components.buttonRadius}; }
+.nav .btn::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:${colors.primary}; transition:left 0.3s ease; z-index:-1; }
+.nav .btn:hover::before { left:0; }
+.nav .btn:hover { color:#0f172a; box-shadow:0 0 10px ${colors.primary}; }
+.hero { text-align:center; padding:80px 20px; position:relative; }
+.hero h1 { font-size:48px; font-weight:300; margin-bottom:20px; color:#ffffff; font-family:'Courier New', monospace; }
+.typing-text { color:${colors.primary}; border-right:2px solid ${colors.primary}; animation:blink 1s infinite; white-space:nowrap; overflow:hidden; width:0; animation:typing 3s steps(30) 1s forwards, blink 1s infinite; }
+@keyframes typing { from { width:0; } to { width:100%; } }
+@keyframes blink { 0%,50% { border-color:${colors.primary}; } 51%,100% { border-color:transparent; } }
+.hero p { font-size:18px; line-height:1.6; margin-bottom:30px; color:#5c6370; max-width:600px; margin-left:auto; margin-right:auto; }
+.hero .btn { background:linear-gradient(45deg, ${colors.accent}, #ff8787); color:white; border:none; padding:15px 30px; font-family:'Courier New', monospace; font-size:16px; font-weight:500; cursor:pointer; transition:all 0.3s ease; position:relative; overflow:hidden; border-radius: ${components.buttonRadius}; }
+.hero .btn:hover { transform:translateY(-2px); box-shadow:0 5px 15px rgba(255,107,107,0.4); }
+.projects { padding:60px 20px; max-width:${layout.containerWidth}; margin:0 auto; }
+.projects h3 { color:#ffffff; font-size:24px; margin-bottom:30px; text-align:center; font-family:'Courier New', monospace; font-weight: ${typography.headingWeight}; }
+.project-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:30px; }
+.project-card { background:#1e293b; border:1px solid #334155; padding:30px; border-radius:${layout.radius}; transition:all 0.4s ease; position:relative; overflow:hidden; }
+.project-card::before { content:''; position:absolute; top:0; left:0; width:100%; height:2px; background:linear-gradient(90deg, ${colors.primary}, ${colors.accent}); }
+.project-card:hover { transform:translateY(-5px); border-color:${colors.primary}; box-shadow:0 10px 30px rgba(97,218,251,0.2); }
+.project-card h4 { color:${colors.primary}; font-size:20px; margin-bottom:15px; font-family:'Courier New', monospace; }
+.project-card p { color:#94a3b8; line-height:1.6; font-size:14px; margin-bottom:20px; }
+.project-tags { display:flex; gap:10px; flex-wrap:wrap; }
+.tag { background:rgba(97,218,251,0.1); color:${colors.primary}; padding:4px 8px; border-radius:4px; font-size:12px; font-family:'Courier New', monospace; }
+.terminal-section { background:#0f172a; border:1px solid #1e293b; border-radius:${layout.radius}; padding:30px; margin:40px; font-family:'Courier New', monospace; position:relative; overflow:hidden; }
+.terminal-header { color:${colors.primary}; margin-bottom:20px; }
+.terminal-content { color:#10b981; font-size:14px; line-height:1.8; }
+.comment { color:#5c6370; font-style:italic; }
+.string { color:#10b981; }
+.keyword { color:#f472b6; }
+.function { color:${colors.primary}; }
+footer { background:#0f172a; border-top:1px solid #1e293b; text-align:center; padding:30px 20px; color:#5c6370; font-family:'Courier New', monospace; font-size:14px; margin-top:60px; }
+footer::before { content:'// '; color:${colors.primary}; }
+</style>
+</head>
+<body>
+<div class="nav">
+  <h2>devPortfolio</h2>
+  <button class="btn">View Code</button>
+</div>
+<section class="hero">
+  <h1>John Developer</h1>
+  <div class="typing-text">Full Stack Engineer & Creative Coder</div>
+  <p>Building innovative solutions with modern web technologies</p>
+  <button class="btn">Download Resume</button>
+</section>
+<div class="projects">
+  <h3>Featured Projects</h3>
+  <div class="project-grid">
+    <div class="project-card">
+      <h4>E-Commerce Platform</h4>
+      <p>Full-stack online marketplace with real-time inventory management and payment processing</p>
+      <div class="project-tags">
+        <span class="tag">React</span>
+        <span class="tag">Node.js</span>
+        <span class="tag">MongoDB</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <h4>AI Chat Application</h4>
+      <p>Real-time messaging app with AI-powered responses and sentiment analysis</p>
+      <div class="project-tags">
+        <span class="tag">TypeScript</span>
+        <span class="tag">Socket.io</span>
+        <span class="tag">OpenAI</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <h4>Data Visualization Dashboard</h4>
+      <p>Interactive dashboard for complex data analysis with custom charts and real-time updates</p>
+      <div class="project-tags">
+        <span class="tag">D3.js</span>
+        <span class="tag">Python</span>
+        <span class="tag">PostgreSQL</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="terminal-section">
+  <div class="terminal-header">$ cat about.md</div>
+  <div class="terminal-content">
+    <span class="comment">// Passionate developer with 5+ years experience</span><br>
+    <span class="keyword">const</span> <span class="function">developer</span> = {<br>
+    &nbsp;&nbsp;<span class="string">name</span>: <span class="string">"John Developer"</span>,<br>
+    &nbsp;&nbsp;<span class="string">skills</span>: [<span class="string">"React"</span>, <span class="string">"Node.js"</span>, <span class="string">"Python"</span>],<br>
+    &nbsp;&nbsp;<span class="string">passion</span>: <span class="string">"Creating amazing user experiences"</span><br>
+    };
+  </div>
+</div>
+<footer>
+  // Built with passion and lots of coffee ☕
+</footer>
+</body>
+</html>`;
+
+    case "E-commerce Modern UI":
+      return `
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body { margin:0; font-family:${typography.fontFamily}; background:${colors.background}; color:${colors.text}; min-height:100vh; overflow-x:hidden; font-size: ${typography.baseSize}; }
+.nav { background:rgba(255,255,255,0.95); backdrop-filter:blur(10px); border-bottom:1px solid #e2e8f0; padding:15px 40px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:1000; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+.nav h2 { color:${colors.primary}; font-size:24px; font-weight:${typography.headingWeight}; }
+.nav .btn { background:linear-gradient(45deg, ${colors.primary}, #7c3aed); color:white; border:none; padding:12px 24px; border-radius:${components.buttonRadius}; font-weight:600; cursor:pointer; transition:all 0.3s ease; position:relative; overflow:hidden; }
+.nav .btn:hover { transform:translateY(-2px); box-shadow:0 5px 15px rgba(91,33,182,0.3); }
+.hero { text-align:center; padding:80px 20px; background:linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); }
+.hero h1 { font-size:48px; font-weight:${typography.headingWeight}; margin-bottom:20px; background:linear-gradient(45deg, ${colors.primary}, ${colors.accent}); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.hero p { font-size:20px; line-height:1.6; margin-bottom:30px; color:${colors.secondary}; max-width:600px; margin-left:auto; margin-right:auto; }
+.hero .btn { background:linear-gradient(45deg, ${colors.accent}, #f43f5e); color:white; border:none; padding:16px 32px; border-radius:${components.buttonRadius}; font-size:18px; font-weight:600; cursor:pointer; transition:all 0.3s ease; box-shadow:0 4px 15px rgba(236,72,153,0.3); }
+.hero .btn:hover { transform:translateY(-3px); box-shadow:0 8px 25px rgba(236,72,153,0.4); }
+.products { padding:60px 20px; max-width:1400px; margin:0 auto; }
+.products h2 { text-align:center; font-size:36px; font-weight:${typography.headingWeight}; margin-bottom:50px; color:${colors.text}; }
+.product-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:30px; }
+.product-card { background:white; border-radius:${layout.radius}; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.08); transition:all 0.4s ease; cursor:pointer; position:relative; }
+.product-card:hover { transform:translateY(-10px) scale(1.02); box-shadow:0 15px 35px rgba(0,0,0,0.15); }
+.product-image { width:100%; height:250px; background:linear-gradient(135deg, ${colors.primary}, ${colors.accent}); position:relative; overflow:hidden; }
+.product-image::before { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.1); transform:translateX(-100%); transition:transform 0.6s ease; }
+.product-card:hover .product-image::before { transform:translateX(0); }
+.product-badge { position:absolute; top:15px; right:15px; background:${colors.accent}; color:white; padding:5px 10px; border-radius:20px; font-size:12px; font-weight:600; text-transform:uppercase; }
+.product-info { padding:20px; }
+.product-title { font-size:18px; font-weight:600; margin-bottom:8px; color:${colors.text}; }
+.product-description { font-size:14px; color:${colors.secondary}; margin-bottom:15px; line-height:1.5; }
+.product-price { display:flex; align-items:center; justify-content:space-between; margin-bottom:15px; }
+.price { font-size:24px; font-weight:700; color:${colors.primary}; }
+.original-price { font-size:16px; color:${colors.secondary}; text-decoration:line-through; margin-left:8px; }
+.add-to-cart { width:100%; background:linear-gradient(45deg, ${colors.primary}, #7c3aed); color:white; border:none; padding:12px; border-radius:${components.buttonRadius}; font-weight:600; cursor:pointer; transition:all 0.3s ease; position:relative; overflow:hidden; }
+.add-to-cart:hover { transform:translateY(-2px); box-shadow:0 5px 15px rgba(91,33,182,0.3); }
+.cart-header { background:#1e293b; color:white; padding:20px 40px; display:flex; justify-content:space-between; align-items:center; }
+.cart-count { background:${colors.accent}; color:white; padding:5px 10px; border-radius:20px; font-size:12px; font-weight:600; }
+</style>
+</head>
+<body>
+<div class="nav">
+  <h2>ShopHub</h2>
+  <button class="btn">Cart (3)</button>
+</div>
+<section class="hero">
+  <h1>Premium Shopping Experience</h1>
+  <p>Discover amazing products with modern e-commerce design</p>
+  <button class="btn">Shop Now</button>
+</section>
+<div class="products">
+  <h2>Featured Products</h2>
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-image">
+        <div class="product-badge">New</div>
+      </div>
+      <div class="product-info">
+        <h3 class="product-title">Premium Headphones</h3>
+        <p class="product-description">Wireless noise-cancelling headphones with premium sound quality</p>
+        <div class="product-price">
+          <span class="price">$299</span>
+          <span class="original-price">$399</span>
+        </div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-image">
+        <div class="product-badge">Sale</div>
+      </div>
+      <div class="product-info">
+        <h3 class="product-title">Smart Watch Pro</h3>
+        <p class="product-description">Advanced fitness tracking with health monitoring features</p>
+        <div class="product-price">
+          <span class="price">$199</span>
+          <span class="original-price">$249</span>
+        </div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-image"></div>
+      <div class="product-info">
+        <h3 class="product-title">Laptop Stand</h3>
+        <p class="product-description">Ergonomic aluminum stand for better posture and cooling</p>
+        <div class="product-price">
+          <span class="price">$49</span>
+        </div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>`;
+
+    case "AI Futuristic Theme":
+      return `
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body { margin:0; font-family:${typography.fontFamily}; background:${colors.background}; color:${colors.text}; min-height:100vh; position:relative; overflow:hidden; font-size: ${typography.baseSize}; }
+body::before { content:''; position:fixed; top:0; left:0; width:100%; height:100%; background:radial-gradient(circle at 20% 50%, rgba(120,119,198,0.3) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255,119,198,0.2) 0%, transparent 50%), radial-gradient(circle at 40% 20%, rgba(120,219,255,0.2) 0%, transparent 50%); z-index:-1; }
+.particles { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:-1; }
+.particle { position:absolute; width:4px; height:4px; background:${colors.primary}; border-radius:50%; opacity:0.6; animation:float-particle 20s infinite linear; }
+.particle:nth-child(odd) { background:${colors.accent}; animation-duration:25s; }
+.particle:nth-child(3n) { background:${colors.secondary}; animation-duration:30s; }
+@keyframes float-particle { 0% { transform:translateY(100vh) translateX(0); } 100% { transform:translateY(-100px) translateX(100px); } }
+.neural-network { position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:600px; height:600px; pointer-events:none; z-index:-1; opacity:0.1; }
+.neural-node { position:absolute; width:8px; height:8px; background:${colors.primary}; border-radius:50%; box-shadow:0 0 20px ${colors.primary}; }
+.neural-line { position:absolute; height:1px; background:linear-gradient(90deg, transparent, ${colors.primary}, transparent); transform-origin:left center; animation:pulse 3s infinite; }
+@keyframes pulse { 0%,100% { opacity:0.3; } 50% { opacity:0.8; } }
+.nav { background:rgba(10,10,10,0.8); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.1); border-radius:${layout.radius}; padding:${layout.padding}; margin:20px; display:flex; justify-content:space-between; align-items:center; }
+.nav h2 { font-size:24px; font-weight:${typography.headingWeight}; background:linear-gradient(45deg, ${colors.primary}, ${colors.accent}); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-transform:uppercase; letter-spacing:2px; }
+.nav .btn { background:linear-gradient(45deg, ${colors.primary}, ${colors.accent}); color:white; border:none; padding:12px 24px; border-radius:${components.buttonRadius}; font-weight:600; cursor:pointer; transition:all 0.3s ease; text-transform:uppercase; letter-spacing:1px; box-shadow:0 4px 15px rgba(99,102,241,0.4); }
+.nav .btn:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(99,102,241,0.6); }
+.hero { text-align:center; padding:120px 20px; position:relative; }
+.hero h1 { font-size:64px; font-weight:${typography.headingWeight}; margin-bottom:30px; background:linear-gradient(45deg, ${colors.primary}, ${colors.accent}, ${colors.secondary}); background-size:200% 200%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:gradient-shift 4s ease-in-out infinite; text-transform:uppercase; letter-spacing:3px; }
+@keyframes gradient-shift { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } }
+.hero p { font-size:20px; line-height:1.6; margin-bottom:40px; color:${colors.secondary}; max-width:700px; margin-left:auto; margin-right:auto; opacity:0.9; }
+.hero .btn { background:linear-gradient(45deg, ${colors.accent}, #f43f5e); color:white; border:none; padding:18px 36px; border-radius:${components.buttonRadius}; font-size:18px; font-weight:600; cursor:pointer; transition:all 0.3s ease; text-transform:uppercase; letter-spacing:2px; box-shadow:0 8px 25px rgba(245,158,11,0.4); position:relative; overflow:hidden; }
+.hero .btn::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition:left 0.5s ease; }
+.hero .btn:hover::before { left:100%; }
+.hero .btn:hover { transform:translateY(-3px) scale(1.05); box-shadow:0 12px 35px rgba(245,158,11,0.6); }
+.ai-features { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:40px; padding:60px 20px; max-width:${layout.containerWidth}; margin:0 auto; }
+.ai-card { background:rgba(255,255,255,0.05); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.1); border-radius:${layout.radius}; padding:40px 30px; text-align:center; transition:all 0.4s ease; position:relative; overflow:hidden; }
+.ai-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg, ${colors.primary}, ${colors.accent}, ${colors.secondary}); background-size:200% 100%; animation:shimmer 3s linear infinite; }
+@keyframes shimmer { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
+.ai-card:hover { transform:translateY(-10px) scale(1.02); background:rgba(255,255,255,0.08); border-color:${colors.primary}; box-shadow:0 20px 40px rgba(99,102,241,0.3); }
+.ai-card h3 { font-size:24px; font-weight:${typography.headingWeight}; margin-bottom:20px; background:linear-gradient(45deg, ${colors.primary}, ${colors.accent}); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.ai-card p { color:${colors.secondary}; line-height:1.6; margin-bottom:20px; }
+.ai-icon { width:60px; height:60px; margin:0 auto 20px; background:linear-gradient(45deg, ${colors.primary}, ${colors.accent}); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; color:white; animation:rotate 10s linear infinite; }
+@keyframes rotate { 0% { transform:rotate(0deg); } 100% { transform:rotate(360deg); } }
+footer { text-align:center; padding:40px 20px; color:${colors.secondary}; border-top:1px solid rgba(255,255,255,0.1); margin-top:80px; font-size:14px; text-transform:uppercase; letter-spacing:2px; }
+</style>
+</head>
+<body>
+<div class="particles">
+  <div class="particle" style="left:10%; animation-delay:0s;"></div>
+  <div class="particle" style="left:20%; animation-delay:2s;"></div>
+  <div class="particle" style="left:30%; animation-delay:4s;"></div>
+  <div class="particle" style="left:40%; animation-delay:6s;"></div>
+  <div class="particle" style="left:50%; animation-delay:8s;"></div>
+  <div class="particle" style="left:60%; animation-delay:10s;"></div>
+  <div class="particle" style="left:70%; animation-delay:12s;"></div>
+  <div class="particle" style="left:80%; animation-delay:14s;"></div>
+  <div class="particle" style="left:90%; animation-delay:16s;"></div>
+</div>
+<div class="neural-network">
+  <div class="neural-node" style="top:20%; left:30%;"></div>
+  <div class="neural-node" style="top:50%; left:70%;"></div>
+  <div class="neural-node" style="top:80%; left:40%;"></div>
+  <div class="neural-node" style="top:30%; left:60%;"></div>
+  <div class="neural-node" style="top:70%; left:20%;"></div>
+  <div class="neural-line" style="top:20%; left:30%; width:200px; transform:rotate(25deg);"></div>
+  <div class="neural-line" style="top:50%; left:70%; width:180px; transform:rotate(-45deg);"></div>
+  <div class="neural-line" style="top:80%; left:40%; width:220px; transform:rotate(-15deg);"></div>
+</div>
+<div class="nav">
+  <h2>NeuralAI</h2>
+  <button class="btn">Launch AI</button>
+</div>
+<section class="hero">
+  <h1>Artificial Intelligence</h1>
+  <p>Experience the future with advanced AI systems, neural networks, and intelligent automation</p>
+  <button class="btn">Initialize System</button>
+</section>
+<div class="ai-features">
+  <div class="ai-card">
+    <div class="ai-icon">🧠</div>
+    <h3>Neural Networks</h3>
+    <p>Deep learning algorithms that mimic human brain functionality for pattern recognition and decision making</p>
+  </div>
+  <div class="ai-card">
+    <div class="ai-icon">⚡</div>
+    <h3>Real-time Processing</h3>
+    <p>Lightning-fast data analysis and response times with optimized computational efficiency</p>
+  </div>
+  <div class="ai-card">
+    <div class="ai-icon">🔮</div>
+    <h3>Predictive Analytics</h3>
+    <p>Advanced forecasting capabilities that anticipate trends and optimize outcomes automatically</p>
+  </div>
+</div>
+<footer>
+  © 2026 NeuralAI - The Future is Now
+</footer>
+</body>
+</html>`;
+
+    default:
+      return `
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body { font-family: ${typography.fontFamily}; margin:0; background: ${colors.background}; color: ${colors.text}; font-size: ${typography.baseSize}; }
+.container { max-width: ${layout.containerWidth}; margin: 0 auto; padding: ${layout.padding}; }
+.header { text-align: center; margin-bottom: 60px; }
+.header h1 { font-size: 42px; margin-bottom: 20px; color: ${colors.primary}; font-weight: ${typography.headingWeight}; }
+.header p { font-size: 18px; color: ${colors.secondary}; max-width: 600px; margin: 0 auto; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+.card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: ${layout.radius}; transition: all 0.3s ease; }
+.card:hover { border-color: ${colors.accent}; transform: translateY(-5px); }
+.card h3 { color: ${colors.accent}; margin-bottom: 20px; font-size: 24px; font-weight: ${typography.headingWeight}; }
+.card p { color: ${colors.secondary}; line-height: 1.6; }
+.btn { background: ${colors.primary}; color: white; border: none; padding: 12px 24px; border-radius: ${components.buttonRadius}; cursor: pointer; transition: all 0.3s ease; margin-top: 20px; }
+.btn:hover { background: ${colors.accent}; }
+.footer { text-align: center; padding: 40px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 80px; color: ${colors.secondary}; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Default Template</h1>
+    <p>A clean, modern design that works for any project</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <h3>Feature One</h3>
+      <p>Customizable design elements with live preview updates</p>
+      <button class="btn">Learn More</button>
+    </div>
+    <div class="card">
+      <h3>Feature Two</h3>
+      <p>Responsive layouts that work on all devices</p>
+      <button class="btn">Explore</button>
+    </div>
+    <div class="card">
+      <h3>Feature Three</h3>
+      <p>Modern styling with smooth animations</p>
+      <button class="btn">Details</button>
+    </div>
+  </div>
+</div>
+<div class="footer">
+  © 2026 CSS Template Maker - Modern Web Design
+</div>
+</body>
+</html>`;
+  }
+};
+
+  const updateConfig = (section, key, value) => {
+    setLocalConfig(prev => ({
+      ...prev,
+      [section]: {
+        ...prev[section],
+        [key]: value
+      }
+    }));
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Main template grid */}
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
+          CSS Template Gallery
+        </h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {templates.map((template) => (
+            <div
+              key={template.id}
+              className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition hover:scale-105"
+              onClick={() => {
+                setActiveWorkspace(template);
+                setShowModal(true);
+              }}
+            >
+              <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600"></div>
+              <div className="p-4">
+                <h3 className="font-semibold text-lg mb-2">{template.name}</h3>
+                <p className="text-gray-600 text-sm">{template.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Customization Modal */}
+      {showModal && activeWorkspace && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-6xl h-5/6 flex">
+            {/* Left Panel - Customization Controls */}
+            <div className="w-1/3 p-6 border-r border-gray-200 overflow-y-auto">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-bold text-gray-800">Customize Design</h2>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Colors Section */}
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold mb-4 text-gray-700">🎨 Colors</h3>
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">Primary</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={localConfig.colors.primary}
+                        onChange={(e) => updateConfig('colors', 'primary', e.target.value)}
+                        className="w-12 h-8 border border-gray-300 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={localConfig.colors.primary}
+                        onChange={(e) => updateConfig('colors', 'primary', e.target.value)}
+                        className="flex-1 px-3 py-1 border border-gray-300 rounded text-sm"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">Secondary</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={localConfig.colors.secondary}
+                        onChange={(e) => updateConfig('colors', 'secondary', e.target.value)}
+                        className="w-12 h-8 border border-gray-300 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={localConfig.colors.secondary}
+                        onChange={(e) => updateConfig('colors', 'secondary', e.target.value)}
+                        className="flex-1 px-3 py-1 border border-gray-300 rounded text-sm"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">Accent</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={localConfig.colors.accent}
+                        onChange={(e) => updateConfig('colors', 'accent', e.target.value)}
+                        className="w-12 h-8 border border-gray-300 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={localConfig.colors.accent}
+                        onChange={(e) => updateConfig('colors', 'accent', e.target.value)}
+                        className="flex-1 px-3 py-1 border border-gray-300 rounded text-sm"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">Background</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={localConfig.colors.background}
+                        onChange={(e) => updateConfig('colors', 'background', e.target.value)}
+                        className="w-12 h-8 border border-gray-300 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={localConfig.colors.background}
+                        onChange={(e) => updateConfig('colors', 'background', e.target.value)}
+                        className="flex-1 px-3 py-1 border border-gray-300 rounded text-sm"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">Text</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={localConfig.colors.text}
+                        onChange={(e) => updateConfig('colors', 'text', e.target.value)}
+                        className="w-12 h-8 border border-gray-300 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={localConfig.colors.text}
+                        onChange={(e) => updateConfig('colors', 'text', e.target.value)}
+                        className="flex-1 px-3 py-1 border border-gray-300 rounded text-sm"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Typography Section */}
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold mb-4 text-gray-700">🔤 Typography</h3>
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">Font Family</label>
+                    <select
+                      value={localConfig.typography.fontFamily}
+                      onChange={(e) => updateConfig('typography', 'fontFamily', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+                    >
+                      <option value="Poppins, sans-serif">Poppins</option>
+                      <option value="Inter, sans-serif">Inter</option>
+                      <option value="Roboto, sans-serif">Roboto</option>
+                      <option value="Montserrat, sans-serif">Montserrat</option>
+                      <option value="Playfair Display, serif">Playfair Display</option>
+                      <option value="Fira Code, monospace">Fira Code</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">Base Font Size</label>
+                    <input
+                      type="text"
+                      value={localConfig.typography.baseSize}
+                      onChange={(e) => updateConfig('typography', 'baseSize', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">Heading Weight</label>
+                    <select
+                      value={localConfig.typography.headingWeight}
+                      onChange={(e) => updateConfig('typography', 'headingWeight', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+                    >
+                      <option value="300">Light</option>
+                      <option value="400">Regular</option>
+                      <option value="500">Medium</option>
+                      <option value="600">Semi Bold</option>
+                      <option value="700">Bold</option>
+                      <option value="800">Extra Bold</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Layout Section */}
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold mb-4 text-gray-700">📐 Layout</h3>
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">Padding</label>
+                    <input
+                      type="text"
+                      value={localConfig.layout.padding}
+                      onChange={(e) => updateConfig('layout', 'padding', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">Border Radius</label>
+                    <input
+                      type="text"
+                      value={localConfig.layout.radius}
+                      onChange={(e) => updateConfig('layout', 'radius', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">Container Width</label>
+                    <input
+                      type="text"
+                      value={localConfig.layout.containerWidth}
+                      onChange={(e) => updateConfig('layout', 'containerWidth', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Components Section */}
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold mb-4 text-gray-700">🎯 Components</h3>
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">Button Radius</label>
+                    <input
+                      type="text"
+                      value={localConfig.components.buttonRadius}
+                      onChange={(e) => updateConfig('components', 'buttonRadius', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Panel - Live Preview */}
+            <div className="flex-1">
+              <div className="h-full">
+                <iframe
+                  className="w-full h-full border-0"
+                  srcDoc={getTemplatePreviewHTML(activeWorkspace, localConfig)}
+                  title="Template Preview"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default TemplateGallery;
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="font-semibold text-xs block mb-1">Secondary</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="color"
+                            value={localConfig.colors.secondary}
+                            onChange={(e) => updateConfig("colors", "secondary", e.target.value)}
+                            className="w-8 h-8 rounded cursor-pointer"
+                          />
+                          <input
+                            type="text"
+                            value={localConfig.colors.secondary}
+                            onChange={(e) => updateConfig("colors", "secondary", e.target.value)}
+                            className="flex-1 text-xs border rounded px-2 py-1"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="font-semibold text-xs block mb-1">Accent</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="color"
+                            value={localConfig.colors.accent}
+                            onChange={(e) => updateConfig("colors", "accent", e.target.value)}
+                            className="w-8 h-8 rounded cursor-pointer"
+                          />
+                          <input
+                            type="text"
+                            value={localConfig.colors.accent}
+                            onChange={(e) => updateConfig("colors", "accent", e.target.value)}
+                            className="flex-1 text-xs border rounded px-2 py-1"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="font-semibold text-xs block mb-1">Background</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="color"
+                            value={localConfig.colors.background}
+                            onChange={(e) => updateConfig("colors", "background", e.target.value)}
+                            className="w-8 h-8 rounded cursor-pointer"
+                          />
+                          <input
+                            type="text"
+                            value={localConfig.colors.background}
+                            onChange={(e) => updateConfig("colors", "background", e.target.value)}
+                            className="flex-1 text-xs border rounded px-2 py-1"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="font-semibold text-xs block mb-1">Text</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="color"
+                            value={localConfig.colors.text}
+                            onChange={(e) => updateConfig("colors", "text", e.target.value)}
+                            className="w-8 h-8 rounded cursor-pointer"
+                          />
+                          <input
+                            type="text"
+                            value={localConfig.colors.text}
+                            onChange={(e) => updateConfig("colors", "text", e.target.value)}
+                            className="flex-1 text-xs border rounded px-2 py-1"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 🔤 TYPOGRAPHY */}
+                  <div className="space-y-3">
+                    <h4 className="font-bold text-purple-600 text-sm uppercase tracking-wider">Typography</h4>
+                    <div>
+                      <label className="font-semibold text-xs block mb-1">Font Family</label>
+                      <select
+                        value={localConfig.typography.fontFamily}
+                        onChange={(e) => updateConfig("typography", "fontFamily", e.target.value)}
+                        className="w-full border border-gray-300 p-2 rounded-lg text-sm"
+                      >
+                        <option value="Poppins, sans-serif">Poppins</option>
+                        <option value="Inter, sans-serif">Inter</option>
+                        <option value="Roboto, sans-serif">Roboto</option>
+                        <option value="Montserrat, sans-serif">Montserrat</option>
+                        <option value="Playfair Display, serif">Playfair Display</option>
+                        <option value="Fira Code, monospace">Fira Code</option>
+                      </select>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="font-semibold text-xs block mb-1">Base Size</label>
+                        <input
+                          type="text"
+                          placeholder="16px"
+                          value={localConfig.typography.baseSize}
+                          onChange={(e) => updateConfig("typography", "baseSize", e.target.value)}
+                          className="w-full border border-gray-300 p-2 rounded-lg text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="font-semibold text-xs block mb-1">Heading Weight</label>
+                        <select
+                          value={localConfig.typography.headingWeight}
+                          onChange={(e) => updateConfig("typography", "headingWeight", e.target.value)}
+                          className="w-full border border-gray-300 p-2 rounded-lg text-sm"
+                        >
+                          <option value="300">Light</option>
+                          <option value="400">Regular</option>
+                          <option value="500">Medium</option>
+                          <option value="600">Semi Bold</option>
+                          <option value="700">Bold</option>
+                          <option value="800">Extra Bold</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 📐 LAYOUT */}
+                  <div className="space-y-3">
+                    <h4 className="font-bold text-purple-600 text-sm uppercase tracking-wider">Layout</h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="font-semibold text-xs block mb-1">Padding</label>
+                        <input
+                          type="text"
+                          placeholder="20px"
+                          value={localConfig.layout.padding}
+                          onChange={(e) => updateConfig("layout", "padding", e.target.value)}
+                          className="w-full border border-gray-300 p-2 rounded-lg text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="font-semibold text-xs block mb-1">Border Radius</label>
+                        <input
+                          type="text"
+                          placeholder="12px"
+                          value={localConfig.layout.radius}
+                          onChange={(e) => updateConfig("layout", "radius", e.target.value)}
+                          className="w-full border border-gray-300 p-2 rounded-lg text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="font-semibold text-xs block mb-1">Container Width</label>
+                        <input
+                          type="text"
+                          placeholder="1200px"
+                          value={localConfig.layout.containerWidth}
+                          onChange={(e) => updateConfig("layout", "containerWidth", e.target.value)}
+                          className="w-full border border-gray-300 p-2 rounded-lg text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="font-semibold text-xs block mb-1">Button Radius</label>
+                        <input
+                          type="text"
+                          placeholder="8px"
+                          value={localConfig.components.buttonRadius}
+                          onChange={(e) => updateConfig("components", "buttonRadius", e.target.value)}
+                          className="w-full border border-gray-300 p-2 rounded-lg text-sm"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ACTION BUTTONS */}
+                <div className="space-y-3 pt-6">
+                  <button 
+                    onClick={() => handleActivate(activeWorkspace.apiKey)}
+                    className="w-full bg-green-500 text-white px-4 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
+                  >
+                    Activate Template
+                  </button>
+                  
+                  {activeApiKey === activeWorkspace.apiKey && (
+                    <button
+                      onClick={() => {
+                        setActiveApiKey(null);
+                        addToast("Template deactivated", "success");
+                      }}
+                      className="w-full bg-red-500 text-white px-4 py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors"
+                    >
+                      Deactivate Template
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* RIGHT PANEL - PREVIEW */}
+              <div className="bg-white">
+                <iframe
+                  className="w-full h-full border-0"
+                  srcDoc={getTemplatePreviewHTML(activeWorkspace, localConfig)}
+                />
+              </div>
+
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default TemplateGallery;

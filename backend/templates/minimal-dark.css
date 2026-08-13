@@ -1,0 +1,75 @@
+/*
+========================================
+Project: NextGen API Template Forge
+Template: Minimal Dark Theme
+Version: v2.0
+========================================
+*/
+
+:root {
+  --primary: {{colors.primary}};
+  --secondary: {{colors.secondary}};
+  --accent: {{colors.accent}};
+  --background: {{colors.background}};
+  --text: {{colors.text}};
+
+  --font-family: {{typography.fontFamily}};
+  --base-size: {{typography.baseSize}};
+  --heading-weight: {{typography.headingWeight}};
+
+  --padding-base: {{layout.paddingBase}};
+  --border-radius: {{layout.borderRadius}};
+  --container-width: {{layout.containerWidth}};
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--base-size);
+  background: var(--background);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.nav {
+  background: var(--primary);
+  padding: var(--padding-base);
+  color: white;
+}
+
+.container {
+  max-width: var(--container-width);
+  margin: auto;
+  padding: var(--padding-base);
+}
+
+.btn {
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+
+.card {
+  background: var(--secondary);
+  padding: var(--padding-base);
+  border-radius: var(--border-radius);
+  margin: 20px 0;
+}
+
+.footer {
+  background: var(--primary);
+  color: white;
+  padding: var(--padding-base);
+  text-align: center;
+}

@@ -1,0 +1,77 @@
+.auth-page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ff9a9e, #ffb347, #ffd700);
+  background-size: 300% 300%;
+  animation: slowGradient 20s ease infinite;
+}
+
+/* VERY SMOOTH COLOR TRANSITION */
+@keyframes slowGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Swipe Layers */
+.swipe-layer {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: -100%;
+  z-index: 1;
+  animation: swipeIn 1.2s ease forwards;
+}
+
+.swipe1 {
+  background: linear-gradient(135deg, #ff7eb3, #ff758c);
+  animation-delay: 0s;
+}
+
+.swipe2 {
+  background: linear-gradient(135deg, #ffb347, #ffd700);
+  animation-delay: 0.2s;
+}
+
+.swipe3 {
+  background: linear-gradient(135deg, #8ec5fc, #e0c3fc);
+  animation-delay: 0.4s;
+}
+
+@keyframes swipeIn {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Content above swipe */
+.auth-content {
+  position: relative;
+  z-index: 2;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

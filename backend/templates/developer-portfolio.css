@@ -1,0 +1,445 @@
+/* Developer Portfolio Interactive */
+:root {
+  --primaryColor: #61dafb;
+  --secondaryColor: #282c34;
+  --accentColor: #ff6b6b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Fira Code', 'Courier New', monospace;
+  background: var(--secondaryColor);
+  color: #abb2bf;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Terminal-style background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      rgba(97, 218, 251, 0.03) 0px,
+      transparent 1px,
+      transparent 2px,
+      rgba(97, 218, 251, 0.03) 3px
+    );
+  background-size: 100% 20px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Navigation */
+.nav {
+  background: rgba(40, 44, 52, 0.95);
+  border-bottom: 1px solid #3e4451;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: slideInFromLeft 0.6s ease-out;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.nav h2 {
+  color: var(--primaryColor);
+  font-size: 20px;
+  font-weight: 600;
+  font-family: 'Fira Code', monospace;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav h2::before {
+  content: '$';
+  color: #5c6370;
+}
+
+.nav .btn {
+  background: transparent;
+  color: var(--primaryColor);
+  border: 1px solid var(--primaryColor);
+  padding: 10px 20px;
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav .btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--primaryColor);
+  transition: left 0.3s ease;
+  z-index: -1;
+}
+
+.nav .btn:hover::before {
+  left: 0;
+}
+
+.nav .btn:hover {
+  color: var(--secondaryColor);
+  box-shadow: 0 0 10px var(--primaryColor);
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 80px 20px;
+  position: relative;
+  animation: fadeIn 0.8s ease-out 0.2s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hero h1 {
+  font-size: 48px;
+  font-weight: 300;
+  margin-bottom: 20px;
+  color: #ffffff;
+  font-family: 'Fira Code', monospace;
+}
+
+/* Typing animation */
+.typing-container {
+  display: inline-block;
+  position: relative;
+}
+
+.typing-text {
+  color: var(--primaryColor);
+  border-right: 2px solid var(--primaryColor);
+  animation: blink 1s infinite;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+  animation: typing 3s steps(30) 1s forwards, blink 1s infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  0%, 50% { border-color: var(--primaryColor); }
+  51%, 100% { border-color: transparent; }
+}
+
+.hero p {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  color: #5c6370;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero .btn {
+  background: linear-gradient(45deg, var(--accentColor), #ff8787);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-family: 'Fira Code', monospace;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero .btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.hero .btn:hover::after {
+  width: 300px;
+  height: 300px;
+}
+
+.hero .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+/* Skills Section */
+.skills {
+  padding: 60px 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.skills h3 {
+  color: #ffffff;
+  font-size: 24px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-family: 'Fira Code', monospace;
+}
+
+.skill-item {
+  margin-bottom: 25px;
+}
+
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #abb2bf;
+}
+
+.skill-name {
+  color: var(--primaryColor);
+}
+
+.skill-percentage {
+  color: #5c6370;
+}
+
+.skill-bar {
+  background: #3e4451;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.skill-progress {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primaryColor), var(--accentColor));
+  border-radius: 4px;
+  width: 0;
+  animation: skillLoad 2s ease-out 1s forwards;
+  position: relative;
+}
+
+@keyframes skillLoad {
+  to {
+    width: var(--skill-level);
+  }
+}
+
+.skill-progress::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Features Section */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  background: #282c34;
+  border: 1px solid #3e4451;
+  border-radius: 8px;
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  animation: slideUp 0.8s ease-out 0.4s both;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--primaryColor);
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+
+.card:hover::before {
+  transform: scaleY(1);
+}
+
+.card:hover {
+  border-color: var(--primaryColor);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(97, 218, 251, 0.2);
+}
+
+.card h3 {
+  color: #ffffff;
+  font-size: 20px;
+  margin-bottom: 15px;
+  font-family: 'Fira Code', monospace;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card h3::before {
+  content: '>';
+  color: var(--primaryColor);
+}
+
+.card p {
+  color: #5c6370;
+  line-height: 1.6;
+  font-size: 14px;
+  font-family: 'Fira Code', monospace;
+}
+
+/* Terminal-style footer */
+footer {
+  background: #21252b;
+  border-top: 1px solid #3e4451;
+  text-align: center;
+  padding: 30px 20px;
+  color: #5c6370;
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  margin-top: 60px;
+}
+
+footer::before {
+  content: '// ';
+  color: var(--primaryColor);
+}
+
+/* Code comments style */
+.comment {
+  color: #5c6370;
+  font-style: italic;
+}
+
+/* String literal style */
+.string {
+  color: #98c379;
+}
+
+/* Keyword style */
+.keyword {
+  color: #c678dd;
+}
+
+/* Function style */
+.function {
+  color: var(--primaryColor);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px 20px;
+  }
+  
+  .hero h1 {
+    font-size: 36px;
+  }
+  
+  .hero p {
+    font-size: 16px;
+  }
+  
+  .features {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .card {
+    padding: 20px;
+  }
+  
+  .skills {
+    padding: 40px 20px;
+  }
+}
+
+/* Custom cursor */
+.cursor {
+  display: inline-block;
+  width: 10px;
+  height: 20px;
+  background: var(--primaryColor);
+  animation: blink 1s infinite;
+  vertical-align: text-bottom;
+}
+
+/* Selection color */
+::selection {
+  background: var(--primaryColor);
+  color: var(--secondaryColor);
+}

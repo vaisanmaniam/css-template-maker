@@ -1,0 +1,78 @@
+:root {
+  --primary: {{colors.primary}};
+  --secondary: {{colors.secondary}};
+  --accent: {{colors.accent}};
+  --background: {{colors.background}};
+  --text: {{colors.text}};
+
+  --font-family: {{typography.fontFamily}};
+  --base-size: {{typography.baseSize}};
+  --heading-weight: {{typography.headingWeight}};
+
+  --padding-base: {{layout.paddingBase}};
+  --border-radius: {{layout.borderRadius}};
+  --container-width: {{layout.containerWidth}};
+}
+
+/* RESET */
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: var(--base-size);
+  background: var(--background);
+  color: var(--text);
+}
+
+/* NAV */
+.nav {
+  background: var(--primary);
+  color: white;
+  padding: var(--padding-base);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* HERO */
+.hero {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+/* CONTAINER */
+.container {
+  display: flex;
+  gap: 20px;
+  padding: var(--padding-base);
+  max-width: var(--container-width);
+  margin: auto;
+}
+
+/* CARD */
+.card {
+  flex: 1;
+  background: var(--secondary);
+  padding: var(--padding-base);
+  border-radius: var(--border-radius);
+}
+
+/* BUTTON */
+.btn {
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+
+/* FOOTER */
+.footer {
+  background: var(--primary);
+  color: white;
+  text-align: center;
+  padding: var(--padding-base);
+}

@@ -1,0 +1,32 @@
+{
+  "tpl_demo_123": {
+    "accentColor": "#a009f1"
+  },
+  "tpl_demo_456": {
+    "colors": {
+      "primary": "#2563eb",
+      "secondary": "#fef3c7",
+      "accent": "#f59e0b",
+      "background": "#ffffff",
+      "text": "#1e293b"
+    },
+    "typography": {
+      "fontFamily": "Poppins, sans-serif",
+      "baseSize": "16px",
+      "headingWeight": "700"
+    },
+    "layout": {
+      "paddingBase": "16px",
+      "borderRadius": "8px",
+      "containerWidth": "1200px"
+    },
+    "components": {
+      "navbarStyle": "solid",
+      "footerStyle": "dark",
+      "buttonStyle": "rounded"
+    },
+    "primaryColor": "#8e0df8",
+    "secondaryColor": "#01699d",
+    "accentColor": "#ecdcc1"
+  }
+}
